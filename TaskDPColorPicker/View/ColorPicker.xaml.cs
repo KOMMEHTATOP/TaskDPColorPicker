@@ -30,7 +30,10 @@ namespace TaskDPColorPicker.View
             var colorDialog = new ColorPickerDialog();
             if (colorDialog.ShowDialog() == true)
             {
-                SelectedColor = colorDialog.SelectedColor;
+                SelectedColor = 
+                    $"#{colorDialog.SelectedColor.R:X2}" +
+                    $"{colorDialog.SelectedColor.G:X2}" +
+                    $"{colorDialog.SelectedColor.B:X2}";
             }
         }
         private static void OnSelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
