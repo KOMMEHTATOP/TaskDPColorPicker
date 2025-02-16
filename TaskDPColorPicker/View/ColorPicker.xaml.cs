@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 
 namespace TaskDPColorPicker.View
@@ -22,7 +23,7 @@ namespace TaskDPColorPicker.View
                 nameof(SelectedColor),
                 typeof(string),
                 typeof(ColorPicker),
-                new PropertyMetadata("#00FF00"));
+                new PropertyMetadata("#00FF00", OnSelectedColorChanged));
 
         private void ButtonPickColor_Click(object sender, RoutedEventArgs e)
         {
@@ -35,7 +36,18 @@ namespace TaskDPColorPicker.View
         private static void OnSelectedColorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = (ColorPicker)d;
-            control.TextBoxColor.Text = (string)e.NewValue;
+
+            // Меняем цвет фона TextBox на выбранный цвет
+            try
+            {
+                var color = (Color)ColorConverter.ConvertFromString((string)e.NewValue);
+                control.TextBoxColor.Background = new SolidColorBrush(color);
+            }
+            catch
+            {
+                // Если цвет некорректен, оставляем фон по умолчанию
+                control.TextBoxColor.Background = Brushes.White;
+            }
         }
 
     }
